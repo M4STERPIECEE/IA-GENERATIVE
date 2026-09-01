@@ -1,5 +1,6 @@
 package com.iagen.agent.orchestration;
 
+import com.iagen.agent.rag.RagResult;
 import com.iagen.agent.rag.RagService;
 import com.iagen.agent.routing.RoutingDecision;
 import com.iagen.agent.security.PromptInjectionGuard;
@@ -9,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -82,7 +82,7 @@ public class OrchestratorService {
     private ChatResponse handleRag(String question, RoutingDecision decision, TraceCollector trace) {
         trace.add("RAG", "Démarrage du retrieval vectoriel...");
 
-        RagService.RagResult ragResult = ragService.retrieve(question);
+        RagResult ragResult = ragService.retrieve(question);
 
         if (ragResult.notInCorpus()) {
             trace.add("RAG", "Aucun document pertinent trouvé → réponse 'je ne sais pas'");
@@ -147,7 +147,7 @@ public class OrchestratorService {
             log.error("[ORCHESTRATOR][MCP] Erreur MCP : {} — tentative fallback RAG", e.getMessage());
             trace.add("MCP", "Erreur MCP : " + e.getMessage() + " → fallback vers RAG");
 
-            RagService.RagResult ragResult = ragService.retrieve(question);
+            RagResult ragResult = ragService.retrieve(question);
             if (!ragResult.notInCorpus()) {
                 trace.add("ORCHESTRATOR", "Fallback RAG réussi après échec MCP.");
                 String safeContext = injectionGuard.sanitizeAndWrap(ragResult.contextBlock(), "RAG-fallback", trace);
@@ -178,7 +178,7 @@ public class OrchestratorService {
     private ChatResponse handleHybrid(String question, RoutingDecision decision, TraceCollector trace) {
         trace.add("HYBRID", "Mode hybride : RAG + MCP");
 
-        RagService.RagResult ragResult = ragService.retrieve(question);
+        RagResult ragResult = ragService.retrieve(question);
         String safeContext = ragResult.notInCorpus()
                 ? "<untrusted-data>Aucune information documentaire pertinente.</untrusted-data>"
                 : injectionGuard.sanitizeAndWrap(ragResult.contextBlock(), "RAG-hybrid", trace);
@@ -209,7 +209,7 @@ public class OrchestratorService {
         }
     }
 
-    // ─── OUT_OF_SCOPE ─────────────────────────────────────────────────────────
+    // OUT_OF_SCOPE
 
     private ChatResponse handleOutOfScope(RoutingDecision decision, TraceCollector trace) {
         trace.add("ORCHESTRATOR", "Question hors-sujet — réponse fixe retournée.");
@@ -222,7 +222,7 @@ public class OrchestratorService {
                 .build();
     }
 
-    // ─── UTILITAIRES ──────────────────────────────────────────────────────────
+    // UTILITAIRES
 
     private ChatResponse errorResponse(RoutingDecision decision, TraceCollector trace, String message) {
         return ChatResponse.builder()

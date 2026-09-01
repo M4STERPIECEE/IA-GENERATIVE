@@ -6,7 +6,6 @@ spring:
     name: ia-genai-agent
 
   ai:
-    # ─── LLM : configurable via variables d'env ───────────────────────────────
     # OpenAI  : AI_API_KEY=sk-...
     # Mistral : AI_API_KEY=... AI_BASE_URL=https://api.mistral.ai/v1 AI_CHAT_MODEL=mistral-large-latest AI_EMBEDDING_MODEL=mistral-embed
     # Ollama  : AI_API_KEY=ollama AI_BASE_URL=http://localhost:11434/v1 AI_CHAT_MODEL=llama3.1 AI_EMBEDDING_MODEL=nomic-embed-text
@@ -21,7 +20,7 @@ spring:
         options:
           model: ${AI_EMBEDDING_MODEL:text-embedding-3-small}
 
-    # ─── Client MCP — connexion streamable-http vers le mcp-server ────────────
+    # Client MCP — connexion streamable-http vers le mcp-server
     mcp:
       client:
         enabled: true
@@ -32,7 +31,7 @@ spring:
             mcp-tools:
               url: http://localhost:8081
 
-# ─── RAG — paramètres de retrieval ──────────────────────────────────────────
+# RAG — paramètres de retrieval
 rag:
   min-similarity: 0.5
   top-k: 4

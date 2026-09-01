@@ -56,7 +56,12 @@ public class IngestionService implements ApplicationRunner {
             return;
         }
 
-        TokenTextSplitter splitter = new TokenTextSplitter(CHUNK_SIZE, CHUNK_OVERLAP, 5, 10000, true, List.of());
+        TokenTextSplitter splitter = TokenTextSplitter.builder()
+                .withChunkSize(CHUNK_SIZE)
+                .withMinChunkSizeChars(CHUNK_OVERLAP)
+                .withMaxNumChunks(10000)
+                .withKeepSeparator(true)
+                .build();
 
         try (Stream<Path> paths = Files.walk(docsPath)) {
             paths.filter(Files::isRegularFile)

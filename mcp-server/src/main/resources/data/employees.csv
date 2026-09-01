@@ -1,0 +1,16 @@
+id,nom,departement,ville,email
+1,Alice Martin,Finance,Paris,alice.martin@iagen.fr
+2,Bob Dupont,Informatique,Lyon,bob.dupont@iagen.fr
+3,Claire Leroy,Ressources Humaines,Paris,claire.leroy@iagen.fr
+4,David Bernard,Finance,Bordeaux,david.bernard@iagen.fr
+5,Emma Petit,Marketing,Paris,emma.petit@iagen.fr
+6,François Moreau,Informatique,Nantes,francois.moreau@iagen.fr
+7,Gabrielle Simon,Juridique,Paris,gabrielle.simon@iagen.fr
+8,Hugo Laurent,Finance,Lille,hugo.laurent@iagen.fr
+9,Isabelle Michel,Ressources Humaines,Lyon,isabelle.michel@iagen.fr
+10,Julien Thomas,Informatique,Paris,julien.thomas@iagen.fr
+11,Karine Robert,Marketing,Bordeaux,karine.robert@iagen.fr
+12,Luc Richard,Direction,Paris,luc.richard@iagen.fr
+13,Marie Durand,Finance,Paris,marie.durand@iagen.fr
+14,Nicolas Mercier,Informatique,Strasbourg,nicolas.mercier@iagen.fr
+15,Olivia Lefebvre,Ressources Humaines,Nantes,olivia.lefebvre@iagen.fr

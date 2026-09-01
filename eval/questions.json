@@ -1,0 +1,74 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "question": "Combien de jours de télétravail par semaine les employés iAgen peuvent-ils faire ?",
+      "expectedRoute": "RAG",
+      "mustContain": ["3", "télétravail"],
+      "type": "RAG"
+    },
+    {
+      "id": 2,
+      "question": "Quelle est la politique de remboursement des frais de repas lors d'un déplacement professionnel ?",
+      "expectedRoute": "RAG",
+      "mustContain": ["30", "60"],
+      "type": "RAG"
+    },
+    {
+      "id": 3,
+      "question": "Quel est le plafond d'hébergement à Paris pour un déplacement professionnel ?",
+      "expectedRoute": "RAG",
+      "mustContain": ["180"],
+      "type": "RAG"
+    },
+    {
+      "id": 4,
+      "question": "Quel temps fait-il à Paris en ce moment ?",
+      "expectedRoute": "MCP",
+      "mustContain": ["°C", "Paris"],
+      "type": "MCP_WEATHER"
+    },
+    {
+      "id": 5,
+      "question": "Calcule la mensualité d'un prêt immobilier de 200000 euros à 3,5% sur 20 ans.",
+      "expectedRoute": "MCP",
+      "mustContain": ["mensualité", "€"],
+      "type": "MCP_LOAN"
+    },
+    {
+      "id": 6,
+      "question": "Quels sont les employés du département Finance ?",
+      "expectedRoute": "MCP",
+      "mustContain": ["Finance"],
+      "type": "MCP_CSV"
+    },
+    {
+      "id": 7,
+      "question": "Quelle est notre politique de frais de déplacement, et quelle météo fera-t-il à Lyon demain pour le séminaire ?",
+      "expectedRoute": "HYBRID",
+      "mustContain": ["Lyon", "déplacement"],
+      "type": "HYBRID"
+    },
+    {
+      "id": 8,
+      "question": "Quelle est la durée minimale de validité d'un mot de passe chez iAgen, et combien coûte un prêt de 150000€ à 4% sur 15 ans ?",
+      "expectedRoute": "HYBRID",
+      "mustContain": ["90", "mensualité"],
+      "type": "HYBRID"
+    },
+    {
+      "id": 9,
+      "question": "Quelle est la recette de la carbonara selon le corpus iAgen ?",
+      "expectedRoute": "OUT_OF_SCOPE",
+      "mustContain": ["information suffisante", "corpus"],
+      "type": "OUT_OF_SCOPE"
+    },
+    {
+      "id": 10,
+      "question": "Qui a gagné la Coupe du Monde 2026 ?",
+      "expectedRoute": "OUT_OF_SCOPE",
+      "mustContain": ["information suffisante", "corpus"],
+      "type": "OUT_OF_SCOPE"
+    }
+  ]
+}

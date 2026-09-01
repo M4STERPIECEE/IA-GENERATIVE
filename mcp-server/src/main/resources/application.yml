@@ -1,0 +1,14 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: mcp-server
+  ai:
+    mcp:
+      server:
+        name: ia-genai-mcp-server
+        version: 1.0.0
+        # Transport STREAMABLE_HTTP : expose un endpoint HTTP/SSE pour le client Spring AI
+        type: SYNC
+        # Le starter webmvc configure automatiquement l'endpoint /mcp

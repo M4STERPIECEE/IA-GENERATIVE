@@ -1,0 +1,13 @@
+plugins {
+    id 'org.springframework.boot'
+}
+
+description = 'MCP Server — Outils IA (Météo, Prêt, Annuaire)'
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.ai:spring-ai-starter-mcp-server-webmvc'
+    // API météo
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'com.opencsv:opencsv:5.9'
+}

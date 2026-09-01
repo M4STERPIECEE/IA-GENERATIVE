@@ -13,12 +13,14 @@ iAgen est une entreprise française spécialisée dans les solutions d'intellige
 **Description** : Solution d'analyse de données et de reporting automatisé alimentée par IA.
 
 **Fonctionnalités** :
+
 - Connexion à vos sources de données (SQL, Excel, API REST)
 - Tableaux de bord dynamiques et rapports automatisés
 - Détection d'anomalies et alertes intelligentes
 - Export PDF/Excel des rapports
 
 **Tarifs 2025** :
+
 - Starter : **490 €/mois** (jusqu'à 5 utilisateurs, 10 sources de données)
 - Business : **990 €/mois** (jusqu'à 25 utilisateurs, sources illimitées)
 - Enterprise : **sur devis** (utilisateurs illimités, SLA garanti 99,9%)
@@ -30,29 +32,33 @@ iAgen est une entreprise française spécialisée dans les solutions d'intellige
 **Description** : Agent conversationnel intelligent configurable sur vos propres documents.
 
 **Fonctionnalités** :
+
 - RAG (Retrieval-Augmented Generation) sur vos corpus documentaires
 - Interface web et API REST disponibles
 - Intégration Slack, Teams, et email
 - Traçabilité complète des échanges
 
 **Tarifs 2025** :
+
 - Starter : **290 €/mois** (1 corpus, 1 000 requêtes/mois)
 - Business : **790 €/mois** (5 corpus, 10 000 requêtes/mois)
 - Enterprise : **sur devis** (corpus illimités, SLA premium)
 
 ---
 
-### iAgen Predict
+### Predict
 
 **Description** : Plateforme de prévision et modélisation prédictive métier.
 
 **Fonctionnalités** :
+
 - Prévision de ventes, stocks et flux
 - Modèles pré-entraînés sur données sectorielles
 - AutoML pour création de modèles personnalisés
 - API d'intégration dans vos ERP/CRM
 
 **Tarifs 2025** :
+
 - Business : **1 490 €/mois** (jusqu'à 3 modèles actifs)
 - Enterprise : **sur devis**
 
@@ -60,12 +66,12 @@ iAgen est une entreprise française spécialisée dans les solutions d'intellige
 
 ## Services d'accompagnement
 
-| Service | Description | Tarif |
-|---|---|---|
-| Audit IA | Diagnostic de maturité IA de votre entreprise | 3 500 € HT |
-| Intégration | Déploiement et configuration sur site | 1 200 €/jour |
-| Formation | Formation équipes (1 à 2 jours) | 2 400 €/session |
-| Support Premium | Support 24/7 avec SLA 4h | Inclus Enterprise |
+| Service         | Description                                   | Tarif             |
+| --------------- | --------------------------------------------- | ----------------- |
+| Audit IA        | Diagnostic de maturité IA de votre entreprise | 3 500 € HT        |
+| Intégration     | Déploiement et configuration sur site         | 1 200 €/jour      |
+| Formation       | Formation équipes (1 à 2 jours)               | 2 400 €/session   |
+| Support Premium | Support 24/7 avec SLA 4h                      | Inclus Enterprise |
 
 ---
 

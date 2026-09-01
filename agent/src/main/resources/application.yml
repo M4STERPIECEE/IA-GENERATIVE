@@ -6,9 +6,6 @@ spring:
     name: ia-genai-agent
 
   ai:
-    # OpenAI  : AI_API_KEY=sk-...
-    # Mistral : AI_API_KEY=... AI_BASE_URL=https://api.mistral.ai/v1 AI_CHAT_MODEL=mistral-large-latest AI_EMBEDDING_MODEL=mistral-embed
-    # Ollama  : AI_API_KEY=ollama AI_BASE_URL=http://localhost:11434/v1 AI_CHAT_MODEL=llama3.1 AI_EMBEDDING_MODEL=nomic-embed-text
     openai:
       base-url: ${AI_BASE_URL:https://api.openai.com}
       api-key: ${AI_API_KEY:changeme}

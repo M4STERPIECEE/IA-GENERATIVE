@@ -51,7 +51,7 @@ _(Assurez-vous que les variables d'environnement du fichier .env sont bien charg
 ./gradlew :agent:bootRun
 ```
 
-### Tests (Smoke Test)
+### Tests
 
 Vous pouvez tester l'API directement avec cURL ou Postman :
 
@@ -79,13 +79,13 @@ Le rapport sera généré dans `eval/report.md`.
 
 ## Objectifs
 
-**Socle obligatoire :**
+**Socle :**
 
 - RAG fonctionnel avec ingestion, chunking (TokenTextSplitter) et indexation au démarrage.
 - Serveur MCP fonctionnel et connecté à l'agent.
 - Routage intelligent et traçable (RAG vs MCP vs Hybride).
 
-**Pour aller plus loin (Bonus réalisés) :**
+**REFACTO:**
 
 - Gestion des erreurs et fallbacks : Si le serveur MCP crash ou timeout, l'orchestrateur log l'erreur et tente de répondre avec le RAG en fallback au lieu de faire planter la requête.
 - 3 outils implémentés sur le serveur MCP couvrant 3 domaines distincts (API Web, Algorithme local, Lecture de fichier).

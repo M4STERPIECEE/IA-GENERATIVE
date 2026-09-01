@@ -17,8 +17,8 @@ public class LoanCalculatorTool {
     public String calculateLoan(double principal, double annualRatePercent, int years) {
         log.info("[MCP][LoanCalculatorTool] Calcul prêt : {}€ à {}% sur {} ans", principal, annualRatePercent, years);
 
-        if (principal <= 0 || annualRatePercent <= 0 || years <= 0) {
-            return "Erreur : tous les paramètres doivent être strictement positifs.";
+        if (principal <= 0 || annualRatePercent < 0 || years <= 0) {
+            return "Erreur : le montant et la durée doivent être strictement positifs, le taux doit être >= 0.";
         }
 
         double monthlyRate = annualRatePercent / 100.0 / 12.0;
@@ -40,6 +40,7 @@ public class LoanCalculatorTool {
         }
 
         String result = String.format(
+                java.util.Locale.US,
                 "Simulation prêt immobilier :\n" +
                         "  Capital emprunté  : %.2f €\n" +
                         "  Taux annuel       : %.2f %%\n" +

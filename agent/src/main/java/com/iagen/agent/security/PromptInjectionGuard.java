@@ -1,8 +1,7 @@
 package com.iagen.agent.security;
 
 import com.iagen.agent.orchestration.TraceCollector;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,9 +18,9 @@ import java.util.regex.Pattern;
  * 3. Encapsulation dans une balise {@code <untrusted-data>} avec règle système
  */
 @Component
+@Slf4j
 public class PromptInjectionGuard {
 
-    private static final Logger log = LoggerFactory.getLogger(PromptInjectionGuard.class);
     private static final String REPLACEMENT = "[CONTENU_NEUTRALISE]";
 
     private static final List<Pattern> INJECTION_PATTERNS = List.of(

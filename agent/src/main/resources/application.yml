@@ -20,7 +20,6 @@ spring:
         options:
           model: ${AI_EMBEDDING_MODEL:text-embedding-3-small}
 
-    # Client MCP — connexion streamable-http vers le mcp-server
     mcp:
       client:
         enabled: true
@@ -31,7 +30,6 @@ spring:
             mcp-tools:
               url: http://localhost:8081
 
-# RAG — paramètres de retrieval
 rag:
   min-similarity: 0.5
   top-k: 4
@@ -40,3 +38,6 @@ rag:
 logging:
   level:
     com.iagen.agent: DEBUG
+
+version:
+  path: v1

@@ -1,8 +1,7 @@
 package com.iagen.agent.web;
 
 import com.iagen.agent.web.dto.ChatResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -12,9 +11,9 @@ import java.time.Instant;
 import java.util.List;
 
 @RestControllerAdvice
+@Slf4j
 public class AgentExceptionHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(AgentExceptionHandler.class);
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ChatResponse> handleMessageNotReadable(HttpMessageNotReadableException ex) {

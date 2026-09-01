@@ -1,20 +1,17 @@
 package com.iagen.mcp.tools;
 
 import com.iagen.mcp.security.OutputSanitizer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
+@RequiredArgsConstructor
 public class LoanCalculatorTool {
 
-    private static final Logger log = LoggerFactory.getLogger(LoanCalculatorTool.class);
     private final OutputSanitizer sanitizer;
-
-    public LoanCalculatorTool(OutputSanitizer sanitizer) {
-        this.sanitizer = sanitizer;
-    }
 
     @Tool(description = "Calcule la mensualité, le coût total et le coût des intérêts d'un prêt immobilier à taux fixe. Paramètres : montant emprunté (€), taux annuel (%), durée (années).")
     public String calculateLoan(double principal, double annualRatePercent, int years) {

@@ -1,7 +1,6 @@
 package com.iagen.agent.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.embedding.EmbeddingModel;
@@ -14,9 +13,8 @@ import org.springframework.context.annotation.Primary;
 import java.io.File;
 
 @Configuration
+@Slf4j
 public class AiConfig {
-
-    private static final Logger log = LoggerFactory.getLogger(AiConfig.class);
 
     @Value("${rag.vectorstore-path:data/vectorstore.json}")
     private String vectorStorePath;
@@ -43,10 +41,10 @@ public class AiConfig {
         SimpleVectorStore store = SimpleVectorStore.builder(embeddingModel).build();
         File file = new File(vectorStorePath);
         if (file.exists()) {
-            log.info("[RAG] Chargement du VectorStore depuis : {}", file.getAbsolutePath());
+            log.info("Chargement du VectorStore depuis : {}", file.getAbsolutePath());
             store.load(file);
         } else {
-            log.info("[RAG] Aucun VectorStore existant — sera créé lors de la première ingestion.");
+            log.info("Aucun VectorStore existant — sera créé lors de la première ingestion.");
         }
         return store;
     }

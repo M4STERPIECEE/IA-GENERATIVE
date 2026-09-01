@@ -7,18 +7,15 @@ description = 'Agent IA — RAG + Routage + Orchestration + Client MCP'
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
-    // Spring AI — LLM OpenAI-compatible + Embedding
     implementation 'org.springframework.ai:spring-ai-starter-model-openai'
 
-    // Spring AI — Client MCP (streamable-http vers mcp-server)
     implementation 'org.springframework.ai:spring-ai-starter-mcp-client'
 
-    // Spring AI — Lecteur de documents Markdown (corpus RAG)
     implementation 'org.springframework.ai:spring-ai-markdown-document-reader'
-
-    // Spring AI — VectorStore (SimpleVectorStore, SearchRequest)
     implementation 'org.springframework.ai:spring-ai-vector-store'
 
-    // Jackson pour parser le JSON de routing
     implementation 'com.fasterxml.jackson.core:jackson-databind'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 }

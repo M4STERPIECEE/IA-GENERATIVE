@@ -10,4 +10,7 @@ dependencies {
     // API météo
     implementation 'com.fasterxml.jackson.core:jackson-databind'
     implementation 'com.opencsv:opencsv:5.9'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 }

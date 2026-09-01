@@ -1,7 +1,7 @@
 package com.iagen.agent.rag;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.reader.markdown.MarkdownDocumentReader;
 import org.springframework.ai.reader.markdown.config.MarkdownDocumentReaderConfig;
@@ -21,9 +21,9 @@ import java.util.List;
 import java.util.stream.Stream;
 
 @Service
+@Slf4j
+@RequiredArgsConstructor
 public class IngestionService implements ApplicationRunner {
-
-    private static final Logger log = LoggerFactory.getLogger(IngestionService.class);
 
     private static final int CHUNK_SIZE = 512;
     private static final int CHUNK_OVERLAP = 64;
@@ -32,10 +32,6 @@ public class IngestionService implements ApplicationRunner {
 
     @Value("${rag.vectorstore-path:data/vectorstore.json}")
     private String vectorStorePath;
-
-    public IngestionService(SimpleVectorStore vectorStore) {
-        this.vectorStore = vectorStore;
-    }
 
     @Override
     public void run(ApplicationArguments args) throws Exception {

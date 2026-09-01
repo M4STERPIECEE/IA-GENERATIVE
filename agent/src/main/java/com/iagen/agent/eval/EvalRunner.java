@@ -7,15 +7,14 @@ import com.iagen.agent.orchestration.TraceCollector;
 import com.iagen.agent.routing.RoutingDecision;
 import com.iagen.agent.routing.RouterService;
 import com.iagen.agent.web.dto.ChatResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.FileWriter;
@@ -29,9 +28,10 @@ import java.util.List;
 @Component
 @Profile("eval")
 @Order(10)
+@Slf4j
+@RequiredArgsConstructor
 public class EvalRunner implements ApplicationRunner {
 
-    private static final Logger log = LoggerFactory.getLogger(EvalRunner.class);
     private static final String QUESTIONS_PATH = "eval/questions.json";
     private static final String REPORT_PATH = "eval/report.md";
 
@@ -39,14 +39,6 @@ public class EvalRunner implements ApplicationRunner {
     private final OrchestratorService orchestratorService;
     private final ApplicationContext applicationContext;
     private final ObjectMapper objectMapper = new ObjectMapper();
-
-    public EvalRunner(RouterService routerService,
-            OrchestratorService orchestratorService,
-            ApplicationContext applicationContext) {
-        this.routerService = routerService;
-        this.orchestratorService = orchestratorService;
-        this.applicationContext = applicationContext;
-    }
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -84,7 +76,7 @@ public class EvalRunner implements ApplicationRunner {
                 String answer = response.getAnswer();
 
                 boolean routeOk = actualRoute.equalsIgnoreCase(expectedRoute)
-                        || actualRoute.startsWith(expectedRoute); // ex: MCP_FALLBACK_RAG
+                        || actualRoute.startsWith(expectedRoute);
                 boolean contentOk = mustContain.stream()
                         .allMatch(keyword -> answer.toLowerCase().contains(keyword.toLowerCase()));
 

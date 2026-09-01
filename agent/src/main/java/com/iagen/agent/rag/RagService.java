@@ -1,7 +1,7 @@
 package com.iagen.agent.rag;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.SimpleVectorStore;
@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Slf4j
+@RequiredArgsConstructor
 public class RagService {
-
-    private static final Logger log = LoggerFactory.getLogger(RagService.class);
 
     private final SimpleVectorStore vectorStore;
 
@@ -23,10 +23,6 @@ public class RagService {
 
     @Value("${rag.top-k:4}")
     private int topK;
-
-    public RagService(SimpleVectorStore vectorStore) {
-        this.vectorStore = vectorStore;
-    }
 
 
     public RagResult retrieve(String question) {

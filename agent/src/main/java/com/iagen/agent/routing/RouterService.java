@@ -2,16 +2,14 @@ package com.iagen.agent.routing;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class RouterService {
-
-    private static final Logger log = LoggerFactory.getLogger(RouterService.class);
 
     private static final String SYSTEM_PROMPT = """
             Tu es un routeur d'agent IA. Ton unique rôle est d'analyser la question de l'utilisateur

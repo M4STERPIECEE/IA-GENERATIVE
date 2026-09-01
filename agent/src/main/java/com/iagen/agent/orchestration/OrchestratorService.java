@@ -5,17 +5,17 @@ import com.iagen.agent.rag.RagService;
 import com.iagen.agent.routing.RoutingDecision;
 import com.iagen.agent.security.PromptInjectionGuard;
 import com.iagen.agent.web.dto.ChatResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@Slf4j
+@RequiredArgsConstructor
 public class OrchestratorService {
-
-    private static final Logger log = LoggerFactory.getLogger(OrchestratorService.class);
 
     private static final String NO_CORPUS_ANSWER = "Je ne dispose pas d'information suffisante dans le corpus interne pour répondre à cette question.";
 
@@ -58,15 +58,6 @@ public class OrchestratorService {
     private final ChatClient executorClient;
     private final RagService ragService;
     private final PromptInjectionGuard injectionGuard;
-
-    public OrchestratorService(
-            @Qualifier("executorChatClient") ChatClient executorClient,
-            RagService ragService,
-            PromptInjectionGuard injectionGuard) {
-        this.executorClient = executorClient;
-        this.ragService = ragService;
-        this.injectionGuard = injectionGuard;
-    }
 
     public ChatResponse orchestrate(String question, RoutingDecision decision, TraceCollector trace) {
         trace.add("ORCHESTRATOR", "Route reçue : " + decision.route() + " | " + decision.reasoning());

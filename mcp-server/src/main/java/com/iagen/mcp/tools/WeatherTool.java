@@ -3,8 +3,7 @@ package com.iagen.mcp.tools;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iagen.mcp.security.OutputSanitizer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.stereotype.Service;
 import java.net.URI;
@@ -14,9 +13,9 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 
 @Service
+@Slf4j
 public class WeatherTool {
 
-    private static final Logger log = LoggerFactory.getLogger(WeatherTool.class);
 
     private static final String GEO_API = "https://geocoding-api.open-meteo.com/v1/search?name=%s&count=1&language=fr&format=json";
     private static final String WEATHER_API = "https://api.open-meteo.com/v1/forecast?latitude=%s&longitude=%s&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&wind_speed_unit=kmh&timezone=auto";

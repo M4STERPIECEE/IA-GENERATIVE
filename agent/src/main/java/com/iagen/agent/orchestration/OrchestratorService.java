@@ -12,23 +12,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * Orchestrateur principal de l'agent.
- * Selon la décision de routage, choisit la bonne stratégie de réponse :
- * RAG, MCP, HYBRID ou OUT_OF_SCOPE, avec dégradation gracieuse en cas d'erreur.
- */
 @Service
 public class OrchestratorService {
 
     private static final Logger log = LoggerFactory.getLogger(OrchestratorService.class);
 
-    /** Phrase canonique retournée quand le corpus ne contient pas la réponse. */
-    private static final String NO_CORPUS_ANSWER =
-            "Je ne dispose pas d'information suffisante dans le corpus interne pour répondre à cette question.";
+    private static final String NO_CORPUS_ANSWER = "Je ne dispose pas d'information suffisante dans le corpus interne pour répondre à cette question.";
 
-    /** Réponse fixe pour les questions hors-sujet. */
-    private static final String OUT_OF_SCOPE_ANSWER =
-            "Je suis l'assistant IA d'iAgen. Je peux vous aider sur les sujets suivants : " +
+    private static final String OUT_OF_SCOPE_ANSWER = "Je suis l'assistant IA d'iAgen. Je peux vous aider sur les sujets suivants : "
+            +
             "politique RH et interne de l'entreprise, nos produits, la sécurité informatique, " +
             "la météo, les simulations de prêt immobilier, et l'annuaire des employés. " +
             "Votre question ne correspond à aucun de ces domaines.";
@@ -76,14 +68,6 @@ public class OrchestratorService {
         this.injectionGuard = injectionGuard;
     }
 
-    /**
-     * Orchestre la réponse finale selon la décision de routage.
-     *
-     * @param question la question originale
-     * @param decision la décision du RouterService
-     * @param trace    collecteur de trace pour cette requête
-     * @return la réponse finale complète
-     */
     public ChatResponse orchestrate(String question, RoutingDecision decision, TraceCollector trace) {
         trace.add("ORCHESTRATOR", "Route reçue : " + decision.route() + " | " + decision.reasoning());
 
@@ -94,8 +78,6 @@ public class OrchestratorService {
             case OUT_OF_SCOPE -> handleOutOfScope(decision, trace);
         };
     }
-
-    // ─── RAG ──────────────────────────────────────────────────────────────────
 
     private ChatResponse handleRag(String question, RoutingDecision decision, TraceCollector trace) {
         trace.add("RAG", "Démarrage du retrieval vectoriel...");
@@ -115,7 +97,6 @@ public class OrchestratorService {
 
         trace.add("RAG", "Sources récupérées : " + ragResult.sources());
 
-        // Sanitisation du contexte RAG avant injection dans le prompt
         String safeContext = injectionGuard.sanitizeAndWrap(ragResult.contextBlock(), "RAG", trace);
 
         try {
@@ -142,8 +123,6 @@ public class OrchestratorService {
         }
     }
 
-    // ─── MCP ──────────────────────────────────────────────────────────────────
-
     private ChatResponse handleMcp(String question, RoutingDecision decision, TraceCollector trace) {
         trace.add("MCP", "Appel de l'executor avec outils MCP...");
 
@@ -168,7 +147,6 @@ public class OrchestratorService {
             log.error("[ORCHESTRATOR][MCP] Erreur MCP : {} — tentative fallback RAG", e.getMessage());
             trace.add("MCP", "Erreur MCP : " + e.getMessage() + " → fallback vers RAG");
 
-            // Dégradation gracieuse : si MCP down, on tente le RAG
             RagService.RagResult ragResult = ragService.retrieve(question);
             if (!ragResult.notInCorpus()) {
                 trace.add("ORCHESTRATOR", "Fallback RAG réussi après échec MCP.");
@@ -180,7 +158,8 @@ public class OrchestratorService {
                             .call()
                             .content();
                     return ChatResponse.builder()
-                            .answer(fallbackAnswer + "\n\n⚠️ Note : le service d'outils externes est temporairement indisponible.")
+                            .answer(fallbackAnswer
+                                    + "\n\n⚠️ Note : le service d'outils externes est temporairement indisponible.")
                             .route("MCP_FALLBACK_RAG")
                             .reasoning(decision.reasoning())
                             .sources(ragResult.sources())
@@ -191,16 +170,14 @@ public class OrchestratorService {
                 }
             }
 
-            return errorResponse(decision, trace, "Le service d'outils externes est temporairement indisponible. Veuillez réessayer dans quelques instants.");
+            return errorResponse(decision, trace,
+                    "Le service d'outils externes est temporairement indisponible. Veuillez réessayer dans quelques instants.");
         }
     }
-
-    // ─── HYBRID ───────────────────────────────────────────────────────────────
 
     private ChatResponse handleHybrid(String question, RoutingDecision decision, TraceCollector trace) {
         trace.add("HYBRID", "Mode hybride : RAG + MCP");
 
-        // Retrieval RAG
         RagService.RagResult ragResult = ragService.retrieve(question);
         String safeContext = ragResult.notInCorpus()
                 ? "<untrusted-data>Aucune information documentaire pertinente.</untrusted-data>"
@@ -209,7 +186,6 @@ public class OrchestratorService {
         trace.add("HYBRID", "Contexte RAG : " + (ragResult.notInCorpus() ? "vide" : ragResult.sources()));
 
         try {
-            // L'executor dispose des outils MCP et du contexte RAG
             String answer = executorClient.prompt()
                     .system(HYBRID_SYSTEM_PROMPT)
                     .user("Contexte documentaire interne :\n" + safeContext + "\n\nQuestion : " + question)

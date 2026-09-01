@@ -11,10 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * Contrôleur REST principal de l'agent IA.
- * Expose l'endpoint {@code POST /api/chat} pour interagir avec l'assistant.
- */
 @RestController
 @RequestMapping("/api")
 public class ChatController {
@@ -29,12 +25,6 @@ public class ChatController {
         this.orchestratorService = orchestratorService;
     }
 
-    /**
-     * Endpoint principal de l'agent IA.
-     *
-     * @param request la question de l'utilisateur
-     * @return la réponse complète avec route, raisonnement, sources et trace
-     */
     @PostMapping("/chat")
     public ResponseEntity<ChatResponse> chat(@RequestBody ChatRequest request) {
         if (request.question() == null || request.question().isBlank()) {
@@ -50,16 +40,12 @@ public class ChatController {
         log.info("[CHAT] Nouvelle question : '{}'", request.question());
         TraceCollector trace = new TraceCollector();
 
-        // Étape 1 : Routage
         RoutingDecision decision = routerService.route(request.question());
-
-        // Étape 2 : Orchestration
         ChatResponse response = orchestratorService.orchestrate(request.question(), decision, trace);
 
         return ResponseEntity.ok(response);
     }
 
-    /** Endpoint de santé pour vérifier que l'agent est opérationnel. */
     @GetMapping("/health")
     public ResponseEntity<String> health() {
         return ResponseEntity.ok("Agent iAgen opérationnel ✓");

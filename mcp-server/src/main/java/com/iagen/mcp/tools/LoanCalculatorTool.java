@@ -6,11 +6,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.stereotype.Service;
 
-/**
- * Outil MCP — Domaine CALCUL.
- * Simule un prêt immobilier : calcule la mensualité, le coût total et les intérêts.
- * Formule : M = P × [r(1+r)^n] / [(1+r)^n - 1]
- */
 @Service
 public class LoanCalculatorTool {
 
@@ -21,14 +16,6 @@ public class LoanCalculatorTool {
         this.sanitizer = sanitizer;
     }
 
-    /**
-     * Calcule les paramètres d'un prêt immobilier à taux fixe.
-     *
-     * @param principal         capital emprunté en euros (ex: 200000)
-     * @param annualRatePercent taux annuel en % (ex: 3.5 pour 3,5%)
-     * @param years             durée du prêt en années (ex: 20)
-     * @return résumé du prêt : mensualité, coût total, coût des intérêts
-     */
     @Tool(description = "Calcule la mensualité, le coût total et le coût des intérêts d'un prêt immobilier à taux fixe. Paramètres : montant emprunté (€), taux annuel (%), durée (années).")
     public String calculateLoan(double principal, double annualRatePercent, int years) {
         log.info("[MCP][LoanCalculatorTool] Calcul prêt : {}€ à {}% sur {} ans", principal, annualRatePercent, years);
@@ -37,7 +24,6 @@ public class LoanCalculatorTool {
             return "Erreur : tous les paramètres doivent être strictement positifs.";
         }
 
-        // Taux mensuel
         double monthlyRate = annualRatePercent / 100.0 / 12.0;
         int months = years * 12;
 
@@ -46,12 +32,10 @@ public class LoanCalculatorTool {
         double totalInterest;
 
         if (monthlyRate == 0) {
-            // Cas taux zéro (théorique)
             monthlyPayment = principal / months;
             totalCost = principal;
             totalInterest = 0;
         } else {
-            // Formule standard de l'annuité constante
             double factor = Math.pow(1 + monthlyRate, months);
             monthlyPayment = principal * (monthlyRate * factor) / (factor - 1);
             totalCost = monthlyPayment * months;

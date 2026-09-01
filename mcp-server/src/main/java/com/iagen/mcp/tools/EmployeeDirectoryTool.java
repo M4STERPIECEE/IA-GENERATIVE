@@ -14,11 +14,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Outil MCP — Domaine FICHIER/CSV.
- * Recherche dans l'annuaire des employés iAgen (fichier CSV interne).
- * Le CSV est chargé en mémoire au démarrage pour des performances optimales.
- */
 @Service
 public class EmployeeDirectoryTool {
 
@@ -32,7 +27,6 @@ public class EmployeeDirectoryTool {
         this.sanitizer = sanitizer;
     }
 
-    /** Chargement du CSV au démarrage de l'application. */
     @PostConstruct
     void loadCsv() {
         try (BufferedReader reader = new BufferedReader(
@@ -56,12 +50,6 @@ public class EmployeeDirectoryTool {
         }
     }
 
-    /**
-     * Recherche des employés par nom, département ou ville.
-     *
-     * @param query terme de recherche (ex: "Finance", "Martin", "Paris")
-     * @return liste des employés correspondants ou message si aucun résultat
-     */
     @Tool(description = "Recherche des employés dans l'annuaire interne par nom, département ou ville. Retourne les informations de contact des employés correspondants.")
     public String searchEmployeeDirectory(String query) {
         log.info("[MCP][EmployeeDirectoryTool] Recherche : '{}'", query);
@@ -94,6 +82,5 @@ public class EmployeeDirectoryTool {
         return sanitizer.sanitize(output, "EmployeeDirectoryTool");
     }
 
-    /** Représentation d'un employé. */
     private record Employee(String id, String nom, String departement, String ville, String email) {}
 }

@@ -17,7 +17,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -27,18 +26,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Lanceur d'évaluation automatique de l'agent.
- * Activé uniquement avec le profil Spring {@code eval}.
- * <p>
- * Lit les questions depuis {@code eval/questions.json}, appelle l'orchestrateur
- * pour chaque question et produit un rapport {@code eval/report.md}.
- *
- * <p>Lancement : {@code ./gradlew :agent:bootRun --args='--spring.profiles.active=eval'}
- */
 @Component
 @Profile("eval")
-@Order(10) // Après IngestionService (Order default)
+@Order(10)
 public class EvalRunner implements ApplicationRunner {
 
     private static final Logger log = LoggerFactory.getLogger(EvalRunner.class);
@@ -51,8 +41,8 @@ public class EvalRunner implements ApplicationRunner {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public EvalRunner(RouterService routerService,
-                      OrchestratorService orchestratorService,
-                      ApplicationContext applicationContext) {
+            OrchestratorService orchestratorService,
+            ApplicationContext applicationContext) {
         this.routerService = routerService;
         this.orchestratorService = orchestratorService;
         this.applicationContext = applicationContext;
@@ -99,7 +89,10 @@ public class EvalRunner implements ApplicationRunner {
                         .allMatch(keyword -> answer.toLowerCase().contains(keyword.toLowerCase()));
 
                 boolean pass = routeOk && contentOk;
-                if (pass) passed++; else failed++;
+                if (pass)
+                    passed++;
+                else
+                    failed++;
 
                 results.add(new EvalResult(id, type, question, expectedRoute, actualRoute,
                         routeOk, contentOk, pass, answer));
@@ -114,10 +107,8 @@ public class EvalRunner implements ApplicationRunner {
             }
         }
 
-        // Génération du rapport
         writeReport(results, passed, failed);
 
-        // Affichage console
         System.out.println("\n╔══════════════════════════════════════════════════╗");
         System.out.printf("║  RAPPORT D'ÉVALUATION iAgen Agent IA             ║%n");
         System.out.println("╠══════════════════════════════════════════════════╣");
@@ -165,6 +156,7 @@ public class EvalRunner implements ApplicationRunner {
     }
 
     private record EvalResult(int id, String type, String question, String expectedRoute,
-                               String actualRoute, boolean routeOk, boolean contentOk,
-                               boolean pass, String answer) {}
+            String actualRoute, boolean routeOk, boolean contentOk,
+            boolean pass, String answer) {
+    }
 }

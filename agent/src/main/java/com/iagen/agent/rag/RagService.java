@@ -11,11 +11,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Service de retrieval RAG.
- * Recherche les documents les plus pertinents dans le VectorStore
- * et construit un bloc de contexte avec citations des sources.
- */
 @Service
 public class RagService {
 
@@ -33,21 +28,8 @@ public class RagService {
         this.vectorStore = vectorStore;
     }
 
-    /**
-     * Résultat du retrieval RAG.
-     *
-     * @param contextBlock   bloc de texte formaté pour le prompt LLM (avec citations)
-     * @param sources        liste des noms de fichiers sources
-     * @param notInCorpus    vrai si aucun document n'atteint le seuil de similarité
-     */
     public record RagResult(String contextBlock, List<String> sources, boolean notInCorpus) {}
 
-    /**
-     * Recherche les documents pertinents pour une question donnée.
-     *
-     * @param question la question de l'utilisateur
-     * @return le contexte RAG prêt pour injection dans le prompt
-     */
     public RagResult retrieve(String question) {
         log.info("[RAG] Retrieval pour : '{}'", question);
 

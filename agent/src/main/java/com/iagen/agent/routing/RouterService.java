@@ -8,13 +8,6 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-/**
- * Service de routage : analyse l'intention de la question via un LLM à température zéro
- * et retourne une décision de routage JSON traçable.
- * <p>
- * Utilise le ChatClient "router" (temperature=0, sans outils) pour des décisions déterministes.
- * En cas d'erreur de parsing JSON, retourne un fallback {@code OUT_OF_SCOPE} pour éviter de planter.
- */
 @Service
 public class RouterService {
 
@@ -53,12 +46,6 @@ public class RouterService {
         this.objectMapper = new ObjectMapper();
     }
 
-    /**
-     * Analyse la question et retourne la décision de routage.
-     *
-     * @param question la question de l'utilisateur
-     * @return la décision de routage avec raisonnement traçable
-     */
     public RoutingDecision route(String question) {
         log.info("[ROUTER] Analyse de la question : '{}'", question);
 
@@ -71,7 +58,6 @@ public class RouterService {
 
             log.debug("[ROUTER] Réponse brute LLM : {}", rawResponse);
 
-            // Extraction du JSON (au cas où le LLM ajoute du texte autour)
             String json = extractJson(rawResponse);
             JsonNode node = objectMapper.readTree(json);
 
@@ -91,7 +77,6 @@ public class RouterService {
         }
     }
 
-    /** Extrait le premier objet JSON trouvé dans une chaîne de texte. */
     private String extractJson(String text) {
         if (text == null) return "{}";
         int start = text.indexOf('{');
@@ -102,7 +87,6 @@ public class RouterService {
         return "{}";
     }
 
-    /** Parse la route avec fallback sur OUT_OF_SCOPE. */
     private RoutingDecision.Route parseRoute(String routeStr) {
         try {
             return RoutingDecision.Route.valueOf(routeStr);

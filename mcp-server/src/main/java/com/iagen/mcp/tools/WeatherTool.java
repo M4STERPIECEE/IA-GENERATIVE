@@ -7,17 +7,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.stereotype.Service;
-
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 
-/**
- * Outil MCP — Domaine WEB/API.
- * Récupère la météo actuelle d'une ville via l'API open-meteo (sans clé API).
- */
 @Service
 public class WeatherTool {
 
@@ -38,17 +33,10 @@ public class WeatherTool {
         this.objectMapper = new ObjectMapper();
     }
 
-    /**
-     * Retourne la météo actuelle d'une ville.
-     *
-     * @param city le nom de la ville (ex: "Paris", "Lyon", "Marseille")
-     * @return description texte de la météo actuelle
-     */
     @Tool(description = "Récupère la météo actuelle d'une ville. Utiliser pour toute question sur le temps, la température, ou la météo d'un lieu.")
     public String getCurrentWeather(String city) {
         log.info("[MCP][WeatherTool] Météo demandée pour : {}", city);
         try {
-            // Étape 1 : géocodage ville → lat/lon
             String geoUrl = String.format(GEO_API, city.trim().replace(" ", "+"));
             JsonNode geoResponse = fetchJson(geoUrl);
 
@@ -62,7 +50,6 @@ public class WeatherTool {
             double lon = location.path("longitude").asDouble();
             String countryCode = location.path("country_code").asText("");
 
-            // Étape 2 : météo actuelle
             String weatherUrl = String.format(WEATHER_API, lat, lon);
             JsonNode weatherResponse = fetchJson(weatherUrl);
 
@@ -75,8 +62,7 @@ public class WeatherTool {
 
             String result = String.format(
                     "Météo actuelle à %s (%s) : %s. Température : %.1f°C, Humidité : %d%%, Vent : %.1f km/h.",
-                    location.path("name").asText(city), countryCode, description, temp, humidity, windSpeed
-            );
+                    location.path("name").asText(city), countryCode, description, temp, humidity, windSpeed);
 
             return sanitizer.sanitize(result, "WeatherTool");
 
@@ -96,7 +82,6 @@ public class WeatherTool {
         return objectMapper.readTree(response.body());
     }
 
-    /** Convertit le code météo WMO en description lisible. */
     private String decodeWeatherCode(int code) {
         return switch (code) {
             case 0 -> "Ciel dégagé";

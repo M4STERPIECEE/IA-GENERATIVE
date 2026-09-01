@@ -11,11 +11,11 @@ spring:
       api-key: ${AI_API_KEY:changeme}
       chat:
         options:
-          model: ${AI_CHAT_MODEL:gpt-4o-mini}
+          model: ${AI_CHAT_MODEL:gemini-3.1-pro}
           temperature: 0.7
       embedding:
         options:
-          model: ${AI_EMBEDDING_MODEL:text-embedding-3-small}
+          model: ${AI_EMBEDDING_MODEL:text-embedding-004}
 
     mcp:
       client:

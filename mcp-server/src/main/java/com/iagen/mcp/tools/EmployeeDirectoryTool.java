@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -35,13 +34,15 @@ public class EmployeeDirectoryTool {
             String line;
             boolean firstLine = true;
             while ((line = reader.readLine()) != null) {
-                if (firstLine) { firstLine = false; continue; } // skip header
+                if (firstLine) {
+                    firstLine = false;
+                    continue;
+                } // skip header
                 String[] parts = line.split(",", -1);
                 if (parts.length >= 5) {
                     employees.add(new Employee(
                             parts[0].trim(), parts[1].trim(), parts[2].trim(),
-                            parts[3].trim(), parts[4].trim()
-                    ));
+                            parts[3].trim(), parts[4].trim()));
                 }
             }
             log.info("[MCP][EmployeeDirectoryTool] {} employés chargés depuis {}", employees.size(), CSV_PATH);
@@ -71,7 +72,8 @@ public class EmployeeDirectoryTool {
             output = "Aucun employé trouvé pour la recherche : '" + query + "'.";
         } else {
             StringBuilder sb = new StringBuilder();
-            sb.append("Résultats de la recherche '").append(query).append("' (").append(results.size()).append(" résultat(s)) :\n");
+            sb.append("Résultats de la recherche '").append(query).append("' (").append(results.size())
+                    .append(" résultat(s)) :\n");
             for (Employee e : results) {
                 sb.append(String.format("  • %s — %s (ville : %s) — %s\n",
                         e.nom(), e.departement(), e.ville(), e.email()));
@@ -81,6 +83,4 @@ public class EmployeeDirectoryTool {
 
         return sanitizer.sanitize(output, "EmployeeDirectoryTool");
     }
-
-    private record Employee(String id, String nom, String departement, String ville, String email) {}
 }

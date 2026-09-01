@@ -28,7 +28,6 @@ public class RagService {
         this.vectorStore = vectorStore;
     }
 
-    public record RagResult(String contextBlock, List<String> sources, boolean notInCorpus) {}
 
     public RagResult retrieve(String question) {
         log.info("[RAG] Retrieval pour : '{}'", question);

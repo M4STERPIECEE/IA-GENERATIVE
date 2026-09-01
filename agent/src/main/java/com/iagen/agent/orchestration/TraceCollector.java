@@ -23,6 +23,4 @@ public class TraceCollector {
                 .toList();
     }
 
-    private record TraceEntry(String timestamp, String message) {
-    }
 }

@@ -155,8 +155,4 @@ public class EvalRunner implements ApplicationRunner {
         log.info("[EVAL] Rapport écrit → {}", new File(REPORT_PATH).getAbsolutePath());
     }
 
-    private record EvalResult(int id, String type, String question, String expectedRoute,
-            String actualRoute, boolean routeOk, boolean contentOk,
-            boolean pass, String answer) {
-    }
 }

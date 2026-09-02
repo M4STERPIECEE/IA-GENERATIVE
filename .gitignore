@@ -8,6 +8,9 @@ build/
 *.jar
 *.war
 
+### Compiled output ###
+bin/
+
 ### IDE ###
 .idea/
 *.iml

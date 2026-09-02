@@ -1,0 +1,56 @@
+image: eclipse-temurin:21-jdk
+
+variables:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+
+  IMAGE_REGISTRY: ${CI_REGISTRY}
+  AGENT_IMAGE: ${CI_REGISTRY_IMAGE}/agent:${CI_COMMIT_SHORT_SHA}
+  MCP_IMAGE: ${CI_REGISTRY_IMAGE}/mcp-server:${CI_COMMIT_SHORT_SHA}
+
+stages:
+  - build
+  - test
+  - docker
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - .gradle/
+    - "*/build/"
+
+build:
+  stage: build
+  script:
+    - ./gradlew --no-daemon compileJava compileTestJava
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - agent/build
+      - mcp-server/build
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+test:
+  stage: test
+  script:
+    - ./gradlew --no-daemon test
+  artifacts:
+    when: always
+    expire_in: 1 week
+    reports:
+      junit:
+        - agent/build/test-results/test/*.xml
+        - mcp-server/build/test-results/test/*.xml
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+docker-build:
+  stage: docker
+  image: eclipse-temurin:21-jdk
+  script:
+    - ./gradlew --no-daemon :agent:jib --image=${AGENT_IMAGE} --username=${CI_REGISTRY_USER} --password=${CI_REGISTRY_PASSWORD}
+    - ./gradlew --no-daemon :mcp-server:jib --image=${MCP_IMAGE} --username=${CI_REGISTRY_USER} --password=${CI_REGISTRY_PASSWORD}
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

@@ -1,0 +1,32 @@
+# Orchestration des deux modules Spring Boot
+# Les images sont construites avec Jib (aucun Dockerfile requis) :
+#   ./gradlew :agent:jibDockerBuild :mcp-server:jibDockerBuild
+
+services:
+  mcp-server:
+    image: iagen/mcp-server:latest
+    container_name: ia-genai-mcp-server
+    ports:
+      - "8081:8081"
+    restart: unless-stopped
+
+  agent:
+    image: iagen/agent:latest
+    container_name: ia-genai-agent
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    volumes:
+      - ./agent/docs:/app/docs:ro
+      - agent-data:/app/data
+    environment:
+      AI_API_KEY: ${AI_API_KEY:changeme}
+      AI_BASE_URL: ${AI_BASE_URL:-https://generativelanguage.googleapis.com/v1beta/openai/}
+      AI_CHAT_MODEL: ${AI_CHAT_MODEL:-gemini-3.1-pro}
+      AI_EMBEDDING_MODEL: ${AI_EMBEDDING_MODEL:-text-embedding-004}
+      SPRING_AI_MCP_CLIENT_CONNECTIONS_MCPTOOLS_URL: http://mcp-server:8081
+    depends_on:
+      - mcp-server
+
+volumes:
+  agent-data:

@@ -29,7 +29,8 @@ class LoanCalculatorToolTest {
     void calculateLoan_standardLoan_correctValues() {
         String result = tool.calculateLoan(200000, 3.5, 20);
 
-        assertThat(result).contains("Capital emprunté  : 200000.00");
+        assertThat(result).contains("Capital emprunté  : 200000.00 Ar");
+        assertThat(result).contains("(40.82 €)");
         assertThat(result).contains("Taux annuel       : 3.50");
         assertThat(result).contains("Durée             : 20 ans (240 mensualités)");
         assertThat(result).contains("Mensualité        :");
@@ -85,7 +86,7 @@ class LoanCalculatorToolTest {
     void calculateLoan_realisticScenario() {
         String result = tool.calculateLoan(150000, 4.0, 15);
 
-        assertThat(result).contains("Capital emprunté  : 150000.00");
+        assertThat(result).contains("Capital emprunté  : 150000.00 Ar");
         assertThat(result).contains("Durée             : 15 ans (180 mensualités)");
         assertThat(result).contains("Mensualité");
         assertThat(result).contains("Coût total");

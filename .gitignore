@@ -29,6 +29,9 @@ agent/data/vectorstore.json
 *.env
 .env
 
+### Rapport d'évaluation généré ###
+**/eval/report.md
+
 ### OS ###
 .DS_Store
 Thumbs.db

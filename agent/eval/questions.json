@@ -11,28 +11,28 @@
       "id": 2,
       "question": "Quelle est la politique de remboursement des frais de repas lors d'un déplacement professionnel ?",
       "expectedRoute": "RAG",
-      "mustContain": ["30", "60"],
+      "mustContain": ["147 000", "294 000"],
       "type": "RAG"
     },
     {
       "id": 3,
-      "question": "Quel est le plafond d'hébergement à Paris pour un déplacement professionnel ?",
+      "question": "Quel est le plafond d'hébergement à Antananarivo pour un déplacement professionnel ?",
       "expectedRoute": "RAG",
-      "mustContain": ["180"],
+      "mustContain": ["882 000"],
       "type": "RAG"
     },
     {
       "id": 4,
-      "question": "Quel temps fait-il à Paris en ce moment ?",
+      "question": "Quel temps fait-il à Antananarivo en ce moment ?",
       "expectedRoute": "MCP",
-      "mustContain": ["°C", "Paris"],
+      "mustContain": ["°C", "Antananarivo"],
       "type": "MCP_WEATHER"
     },
     {
       "id": 5,
-      "question": "Calcule la mensualité d'un prêt immobilier de 200000 euros à 3,5% sur 20 ans.",
+      "question": "Calcule la mensualité d'un prêt immobilier de 980000000 Ariary à 3,5% sur 20 ans.",
       "expectedRoute": "MCP",
-      "mustContain": ["mensualité", "€"],
+      "mustContain": ["mensualité", "Ar"],
       "type": "MCP_LOAN"
     },
     {
@@ -44,14 +44,14 @@
     },
     {
       "id": 7,
-      "question": "Quelle est notre politique de frais de déplacement, et quelle météo fera-t-il à Lyon demain pour le séminaire ?",
+      "question": "Quelle est notre politique de frais de déplacement, et quelle météo fera-t-il à Toamasina demain pour le séminaire ?",
       "expectedRoute": "HYBRID",
-      "mustContain": ["Lyon", "déplacement"],
+      "mustContain": ["Toamasina", "déplacement"],
       "type": "HYBRID"
     },
     {
       "id": 8,
-      "question": "Quelle est la durée minimale de validité d'un mot de passe chez iAgen, et combien coûte un prêt de 150000€ à 4% sur 15 ans ?",
+      "question": "Quelle est la durée minimale de validité d'un mot de passe chez iAgen, et combien coûte un prêt de 735000000 Ariary à 4% sur 15 ans ?",
       "expectedRoute": "HYBRID",
       "mustContain": ["90", "mensualité"],
       "type": "HYBRID"

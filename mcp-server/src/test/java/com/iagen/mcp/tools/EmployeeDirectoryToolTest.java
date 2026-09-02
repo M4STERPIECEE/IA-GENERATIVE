@@ -27,10 +27,10 @@ class EmployeeDirectoryToolTest {
         org.mockito.Mockito.lenient().when(sanitizer.sanitize(anyString(), eq("EmployeeDirectoryTool"))).thenAnswer(inv -> inv.getArgument(0));
 
         List<Employee> testEmployees = new ArrayList<>();
-        testEmployees.add(new Employee("1", "Alice Martin", "Finance", "Paris", "alice@iagen.fr"));
-        testEmployees.add(new Employee("2", "Bob Dupont", "Informatique", "Lyon", "bob@iagen.fr"));
-        testEmployees.add(new Employee("3", "Claire Leroy", "Ressources Humaines", "Paris", "claire@iagen.fr"));
-        testEmployees.add(new Employee("4", "David Bernard", "Finance", "Bordeaux", "david@iagen.fr"));
+        testEmployees.add(new Employee("1", "Hery Randrianasolo", "Finance", "Antananarivo", "hery@iagen.mg"));
+        testEmployees.add(new Employee("2", "Lalao Rakotomalala", "Informatique", "Toamasina", "lalao@iagen.mg"));
+        testEmployees.add(new Employee("3", "Voahangy Andrianarisoa", "Ressources Humaines", "Antananarivo", "voahangy@iagen.mg"));
+        testEmployees.add(new Employee("4", "Faly Razafindrakoto", "Finance", "Antsirabe", "faly@iagen.mg"));
 
         Field employeesField = EmployeeDirectoryTool.class.getDeclaredField("employees");
         employeesField.setAccessible(true);
@@ -39,36 +39,36 @@ class EmployeeDirectoryToolTest {
 
     @Test
     void searchEmployeeDirectory_byName() {
-        String result = tool.searchEmployeeDirectory("Alice");
+        String result = tool.searchEmployeeDirectory("Hery");
 
-        assertThat(result).contains("Alice Martin");
+        assertThat(result).contains("Hery Randrianasolo");
         assertThat(result).contains("Finance");
-        assertThat(result).contains("alice@iagen.fr");
+        assertThat(result).contains("hery@iagen.mg");
     }
 
     @Test
     void searchEmployeeDirectory_byDepartment() {
         String result = tool.searchEmployeeDirectory("Finance");
 
-        assertThat(result).contains("Alice Martin");
-        assertThat(result).contains("David Bernard");
+        assertThat(result).contains("Hery Randrianasolo");
+        assertThat(result).contains("Faly Razafindrakoto");
         assertThat(result).contains("2 résultat(s)");
     }
 
     @Test
     void searchEmployeeDirectory_byCity() {
-        String result = tool.searchEmployeeDirectory("Paris");
+        String result = tool.searchEmployeeDirectory("Antananarivo");
 
-        assertThat(result).contains("Alice Martin");
-        assertThat(result).contains("Claire Leroy");
-        assertThat(result).doesNotContain("Bob Dupont");
+        assertThat(result).contains("Hery Randrianasolo");
+        assertThat(result).contains("Voahangy Andrianarisoa");
+        assertThat(result).doesNotContain("Lalao Rakotomalala");
     }
 
     @Test
     void searchEmployeeDirectory_caseInsensitive() {
         String result = tool.searchEmployeeDirectory("informatique");
 
-        assertThat(result).contains("Bob Dupont");
+        assertThat(result).contains("Lalao Rakotomalala");
     }
 
     @Test
@@ -95,25 +95,25 @@ class EmployeeDirectoryToolTest {
 
     @Test
     void searchEmployeeDirectory_singleResult() {
-        String result = tool.searchEmployeeDirectory("Bob");
+        String result = tool.searchEmployeeDirectory("Lalao");
 
         assertThat(result).contains("1 résultat(s)");
-        assertThat(result).contains("Bob Dupont");
+        assertThat(result).contains("Lalao Rakotomalala");
         assertThat(result).contains("Informatique");
-        assertThat(result).contains("Lyon");
+        assertThat(result).contains("Toamasina");
     }
 
     @Test
     void searchEmployeeDirectory_partialNameMatch() {
-        String result = tool.searchEmployeeDirectory("Bernard");
+        String result = tool.searchEmployeeDirectory("Rakotomalala");
 
-        assertThat(result).contains("David Bernard");
-        assertThat(result).doesNotContain("Alice Martin");
+        assertThat(result).contains("Lalao Rakotomalala");
+        assertThat(result).doesNotContain("Hery Randrianasolo");
     }
 
     @Test
     void searchEmployeeDirectory_callsSanitizer() {
-        tool.searchEmployeeDirectory("Paris");
+        tool.searchEmployeeDirectory("Antananarivo");
 
         org.mockito.Mockito.verify(sanitizer).sanitize(anyString(), eq("EmployeeDirectoryTool"));
     }
